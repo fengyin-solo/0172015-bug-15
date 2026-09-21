@@ -4,14 +4,15 @@
 
 .toast-container {
     position: fixed;
-    top: 24px;
+    bottom: 24px;
     right: 24px;
     z-index: 10000;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* 新提示从底部出现，旧提示向上排列 */
     gap: 12px;
     pointer-events: none;
     max-width: 420px;
+    max-height: calc(100vh - 48px);
 }
 
 .toast {
@@ -173,12 +174,18 @@
     font-size: 14px;
     transition: all var(--transition-fast);
     flex-shrink: 0;
+    position: relative;
+    z-index: 2; /* 确保不被进度条或其他装饰层遮挡，始终可点击 */
 }
 
 .toast-close:hover {
     background: rgba(255, 255, 255, 0.2);
     color: var(--text-primary);
     transform: rotate(90deg);
+}
+
+.toast-close:disabled {
+    cursor: default;
 }
 
 /* Toast 进度条 */
@@ -190,6 +197,7 @@
     background: rgba(255, 255, 255, 0.3);
     border-radius: 0 0 0 var(--radius-lg);
     animation: toastProgress linear forwards;
+    pointer-events: none; /* 不拦截关闭按钮及内容区的点击 */
 }
 
 .toast-success .toast-progress {
@@ -216,7 +224,7 @@
 /* 响应式 */
 @media (max-width: 480px) {
     .toast-container {
-        top: 12px;
+        bottom: 12px;
         right: 12px;
         left: 12px;
         max-width: none;

@@ -7,12 +7,30 @@ class ChartManager {
         this.charts = {};
     }
 
+    // 初始化前校验 ECharts 库是否就绪；异常时给出常驻、可手动关闭的错误提示
+    ensureECharts() {
+        if (typeof echarts === 'undefined' || !echarts.init) {
+            window.toast.error(
+                '图表加载失败',
+                'ECharts 资源未加载成功，请检查网络后刷新页面重试。'
+            );
+            return false;
+        }
+        return true;
+    }
+
     // 初始化漏斗图
     initFunnelChart(containerId) {
         const container = document.getElementById(containerId);
-        if (!container) return;
+        if (!container || !this.ensureECharts()) return null;
 
-        const chart = echarts.init(container);
+        let chart;
+        try {
+            chart = echarts.init(container);
+        } catch (err) {
+            window.toast.error('漏斗图初始化失败', err && err.message ? err.message : '请刷新页面后重试。');
+            return null;
+        }
         this.charts.funnel = chart;
 
         const option = {
@@ -83,9 +101,15 @@ class ChartManager {
     // 初始化雷达图
     initRadarChart(containerId) {
         const container = document.getElementById(containerId);
-        if (!container) return;
+        if (!container || !this.ensureECharts()) return null;
 
-        const chart = echarts.init(container);
+        let chart;
+        try {
+            chart = echarts.init(container);
+        } catch (err) {
+            window.toast.error('雷达图初始化失败', err && err.message ? err.message : '请刷新页面后重试。');
+            return null;
+        }
         this.charts.radar = chart;
 
         const option = {
