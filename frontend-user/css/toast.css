@@ -4,7 +4,7 @@
 
 .toast-container {
     position: fixed;
-    top: 24px;
+    bottom: 24px;
     right: 24px;
     z-index: 10000;
     display: flex;
@@ -37,6 +37,7 @@
 
 .toast.toast-exit {
     animation: toastSlideOut 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+    pointer-events: none;
 }
 
 @keyframes toastSlideIn {
@@ -216,7 +217,7 @@
 /* 响应式 */
 @media (max-width: 480px) {
     .toast-container {
-        top: 12px;
+        bottom: 12px;
         right: 12px;
         left: 12px;
         max-width: none;
